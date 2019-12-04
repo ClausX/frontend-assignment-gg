@@ -6,7 +6,48 @@
   --gung-black-color: #000000;
 }
 body {
-  padding-top: 20px;
+  padding-top: 18px;
+  padding-right: 18px;
+  padding-left: 18px;
+}
+
+.pagination {
+  float: right;
+}
+
+.page-index {
+  float: right;
+  color: var(--gung-secondary-dark-color);
+  font-size: 12px;
+}
+
+.page-index span {
+  font-weight: bold;
+  color: var(--gung-accent-color);
+  font-size: 18px;
+}
+
+.page-item {
+  cursor: pointer;
+}
+
+.range-input input {
+  width: 60px;
+}
+
+.simple-input-group .simple-input{
+  float: right;
+}
+
+/* no-select css borrowed from stackoverflow */
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 /* Spinner css borrowed from w3schools*/

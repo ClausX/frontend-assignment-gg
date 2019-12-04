@@ -12,6 +12,7 @@ angular.
         self.productCategory = '';
         self.displayProducts = [];
         self.pages = [1];
+        self.currentPaginationPages = self.pages;
         self.orderProp = "name";
         self.pageNumber = 1;
         self.productsPerPage = "5";
@@ -23,15 +24,16 @@ angular.
         const getAlot = false;
         
         if (getAlot) {
-            window.getAlotOfCategories(response => {
+            window.getAlotOfCategories(response => { // This exists in order to try getAlotOfCategories and does its own thing
                 getProductIds(response).then(data => {
-                for (let i = 0; i < 10000; i++) {
-                    window.getRandomProduct(data[i], response => {
-                        self.allProducts.push(pushProductInfo(response));
-                        // TODO: Await all calls to getProduct and then do $apply  
-                        $scope.$apply();
-                    });
-                }
+                    for (let i = 0; i < 1234; i++) {
+                        window.getRandomProduct(data[i], response => {
+                            self.allProducts.push(pushProductInfo(response));
+                            self.displayProducts.push(pushProductInfo(response));
+                            $scope.$apply();
+                        });
+                    }
+                    self.isLoading = false; 
                 });
             });
         } else {
@@ -133,7 +135,58 @@ angular.
             }
         }
 
-        // Filters ______________________
+        function updateCurrentPaginationPages(currentPage) {
+            self.currentPaginationPages= [currentPage];
+            if (currentPage - 1 > 0) {
+                self.currentPaginationPages.unshift(currentPage-1);
+                
+                if (currentPage - 2 > 0) {
+                    self.currentPaginationPages.unshift(currentPage-2);
+                }
+            }
+
+            if (currentPage + 1 <= self.pages.length) {
+                self.currentPaginationPages.push(currentPage+1);
+
+                if (currentPage + 2 <= self.pages.length){
+                    self.currentPaginationPages.push(currentPage+2);
+                }
+            }
+        }
+
+        
+        self.onPaginationClick = function(action) {
+            if (typeof action === "string") { // These strings could be from an ENUM object or something
+                if (action === 'first') {
+                    action = 1;
+                } else if (action === 'previous') {
+                    stepPageNumber(-1);
+                } else if (action === 'next') {
+                    stepPageNumber(1);
+                } else if (action === 'last') {
+                    action = self.pages.length;
+                }
+            } 
+            setPageNumber(action);
+        }
+        
+        function setPageNumber(number) {
+            if (number <= 0) {
+                self.pageNumber = 1;
+            } else if (number <= self.pages.length) {
+                self.pageNumber = number;
+            }
+        }
+
+        function stepPageNumber(number) {
+            if (number < 0) {
+                setPageNumber(self.pageNumber-1);
+            } else {
+                setPageNumber(self.pageNumber+1);
+            }
+        }
+
+        // Filters & table controllers __
 
         self.filterPrice = function(product) { // TODO: Refactor
             let maxPrice = self.maxPrice ? self.maxPrice : Number.MAX_SAFE_INTEGER;
@@ -182,6 +235,18 @@ angular.
         $scope.$watch('$ctrl.productCategory', (newValue, oldValue) => {
             if (newValue != oldValue) {
                 updateDisplayProducts(newValue);
+            }
+        });
+
+        $scope.$watch('$ctrl.pages', (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                updateCurrentPaginationPages(self.pageNumber);
+            }
+        });
+
+        $scope.$watch('$ctrl.pageNumber', (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                updateCurrentPaginationPages(self.pageNumber);
             }
         });
     }]

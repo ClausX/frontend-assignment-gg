@@ -1,68 +1,81 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"> 
-            <!--TODO: Make this a component?-->
-            <p>
-            Search name:
-            <input ng-model="$ctrl.nameQuery">
-            </p>
-
-            <p>
-                Search ID:
-                <input ng-model="$ctrl.idQuery">
-            </p>
-
-            <p> <!-- TODO: implement some kind of slider. Make a component?-->
-                Price range:
-                <input ng-model="$ctrl.minPrice">
-                 - 
-                <input ng-model="$ctrl.maxPrice">
-            </p>
-
-            <p> <!-- TODO: implement some kind of slider. Make a component?-->
-                Volume range:
-                <input ng-model="$ctrl.minVolume">
-                 - 
-                <input ng-model="$ctrl.maxVolume">
-            </p>
-    
-            <p>
-            Sort by:
-            <select ng-model="$ctrl.orderProp">
-                <option value="name">Alphabetical</option>
-                <option value="-price">Most expensive</option>
-                <option value="price">Cheapest</option>
-            </select>
-            </p>
-            <p>
-                Category:
-                <select ng-model="$ctrl.productCategory">
-                    <option ng-repeat="category in $ctrl.productCategories">{{category}}</option>
-                </select> 
-            </p>
-
-            <p>
-                <input type="checkbox" ng-model="$ctrl.filterInStock" ng-false-value="">Show only products in stock</input>
-            </p>
-    
+    <div class="col-md-2"> 
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p>
+                    Category:
+                    <select ng-model="$ctrl.productCategory">
+                        <option ng-repeat="category in $ctrl.productCategories">{{category}}</option>
+                    </select> 
+                </p>
+            </div>
         </div>
-        <div ng-if="$ctrl.isLoading" class="spinner"></div>
-        <div class="col-md-10"> 
-            <!--TODO: Make this a component?-->
-            <div  ng-if="!$ctrl.isLoading">
+    </div>
+    <div ng-if="$ctrl.isLoading" class="spinner"></div>
+    <div class="col-md-10"> 
+        <div class="row panel panel-default">
+            <div class="panel-body">
+                <!--TODO: Make this a component?-->
+                <div class="col-md-3"> 
+                    <p class="simple-input-group">
+                        Search name:
+                        <input class="simple-input" ng-model="$ctrl.nameQuery">
+                    </p>
+        
+                    <p class="simple-input-group">
+                        Search ID:
+                        <input class="simple-input" ng-model="$ctrl.idQuery">
+                    </p>
+                    
+                    <p>
+                        <input type="checkbox" ng-model="$ctrl.filterInStock" ng-false-value="">Show only products in stock</input>
+                    </p>
+                </div>
+
+                <div class="col-md-3"> 
+                    <p class="range-input"> <!-- TODO: implement some kind of slider. Make a component?-->
+                        Price range:
+                        <input ng-model="$ctrl.minPrice">
+                        - 
+                        <input ng-model="$ctrl.maxPrice">
+                    </p>
+        
+                    <p class="range-input"> <!-- TODO: implement some kind of slider. Make a component?-->
+                        Volume range:
+                        <input ng-model="$ctrl.minVolume">
+                        - 
+                        <input ng-model="$ctrl.maxVolume">
+                    </p>
+                </div>
+                
+                <div class="col-md-6"> 
+                    <p>
+                        Sort by:
+                        <select ng-model="$ctrl.orderProp">
+                            <option value="name">Alphabetical</option>
+                            <option value="-price">Most expensive</option>
+                            <option value="price">Cheapest</option>
+                        </select>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--TODO: Make this a component?-->
+        <div  ng-if="!$ctrl.isLoading">
+            <div class="row">
                 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                        <th class="th-sm">Name
-                        </th>
-                        <th class="th-sm">ID
-                        </th>
-                        <th class="th-sm">Price
-                        </th>
-                        <th class="th-sm">Volume
-                        </th>
-                        <th class="th-sm">In stock
-                        </th>   
+                            <th class="th-sm">Name
+                            </th>
+                            <th class="th-sm">ID
+                            </th>
+                            <th class="th-sm">Price
+                            </th>
+                            <th class="th-sm">Volume
+                            </th>
+                            <th class="th-sm">In stock
+                            </th>   
                         </tr>
                     </thead>
                     <tbody>
@@ -94,15 +107,43 @@
                         </tr>
                     </tfoot>
                 </table>
-                <select ng-model="$ctrl.productsPerPage"> <!-- TODO: ng-repeat on array-->
-                    <option>5</option>
-                    <option>10</option>
-                    <option>50</option>
-                    <option>100</option>
-                </select>
-                <!-- TODO: ng-repeat on $ctrl.products.length, but "up to 5" or something. Next, prev, first, last-->
-                <!-- It seems weird not to be able to do "for i from 1 to 10", or something-->
-                <select ng-model="$ctrl.pageNumber" ng-options="x for x in $ctrl.pages"></select> 
+            </div >
+
+            <div class="row">
+                <span class="page-index">Page <span>{{$ctrl.pageNumber}}</span> of <span>{{$ctrl.pages.length}}</span></span>
+            </div>
+
+            <div class="row">
+                <!-- Could easily be a separate component-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" ng-class="{disabled: $ctrl.pageNumber === 1}">
+                            <a class="page-link no-select" ng-click="$ctrl.onPaginationClick('first')">
+                                << First
+                            </a>
+                        </li>
+                        <li class="page-item" ng-class="{disabled: $ctrl.pageNumber === 1}">
+                            <a class="page-link no-select" ng-click="$ctrl.onPaginationClick('previous')">
+                                < Previous
+                            </a>
+                        </li>
+                        <li ng-repeat="page in $ctrl.currentPaginationPages" ng-class="{active: page === $ctrl.pageNumber}" class="page-item">
+                            <a class="page-link no-select" ng-click="$ctrl.onPaginationClick(page)">
+                                {{page}}
+                            </a>
+                        </li>
+                        <li class="page-item" ng-class="{disabled: $ctrl.pageNumber === $ctrl.pages.length}">
+                            <a class="page-link no-select" ng-click="$ctrl.onPaginationClick('next')">
+                                Next >
+                            </a>
+                        </li>
+                        <li class="page-item" ng-class="{disabled: $ctrl.pageNumber === $ctrl.pages.length}">
+                            <a class="page-link no-select" ng-click="$ctrl.onPaginationClick('last')">
+                                Last >>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
