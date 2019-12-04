@@ -1,0 +1,30 @@
+:root {
+  --gung-primary-light-color: #FFFFFF;
+  --gung-primary-dark-color: #303133;
+  --gung-secondary-dark-color: #828282;
+  --gung-accent-color: #FFA500;
+  --gung-black-color: #000000;
+}
+body {
+  padding-top: 20px;
+}
+
+/* Spinner css borrowed from w3schools*/
+.spinner {
+  border: 16px solid var(--gung-secondary-dark-color);
+  border-top: 16px solid var(--gung-accent-color); 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
