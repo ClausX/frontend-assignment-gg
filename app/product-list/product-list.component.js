@@ -3,7 +3,7 @@
 angular.
   module('productListApp').
   component('productList', {
-    templateUrl: '/product-list.template.html',
+    templateUrl: 'product-list/product-list.template.html',
     controller: ['$scope', function ProductListController($scope) {
         var self = this;
         self.productTree;
