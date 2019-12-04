@@ -47,34 +47,48 @@
                         <input ng-model="$ctrl.maxVolume">
                     </p>
                 </div>
-                
-                <div class="col-md-6"> 
-                    <p>
-                        Sort by:
-                        <select ng-model="$ctrl.orderProp">
-                            <option value="name">Alphabetical</option>
-                            <option value="-price">Most expensive</option>
-                            <option value="price">Cheapest</option>
-                        </select>
-                    </p>
-                </div>
             </div>
         </div>
-        <!--TODO: Make this a component?-->
+        <!--TODO: Make this a component? There is a lot of repeting code parts -->
         <div  ng-if="!$ctrl.isLoading">
             <div class="row">
                 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="th-sm">Name
+                            <th 
+                                class="th-sm" 
+                                ng-class="{
+                                    'current-order': $ctrl.orderProp === 'name',
+                                    'current-order-reverse': $ctrl.orderProp === '-name'}"
+                                ng-click="$ctrl.changeOrderProp('name')"> Name
                             </th>
-                            <th class="th-sm">ID
+                            <th 
+                                class="th-sm" 
+                                ng-class="{
+                                    'current-order': $ctrl.orderProp === 'id',
+                                    'current-order-reverse': $ctrl.orderProp === '-id'}"
+                                ng-click="$ctrl.changeOrderProp('id')"> ID
                             </th>
-                            <th class="th-sm">Price
+                            <th 
+                                class="th-sm" 
+                                ng-class="{
+                                    'current-order': $ctrl.orderProp === 'price',
+                                    'current-order-reverse': $ctrl.orderProp === '-price'}"
+                                ng-click="$ctrl.changeOrderProp('price')"> Price
                             </th>
-                            <th class="th-sm">Volume
+                            <th 
+                                class="th-sm" 
+                                ng-class="{
+                                    'current-order': $ctrl.orderProp === 'volume',
+                                    'current-order-reverse': $ctrl.orderProp === '-volume'}"
+                                ng-click="$ctrl.changeOrderProp('volume')"> Volume
                             </th>
-                            <th class="th-sm">In stock
+                            <th 
+                                class="th-sm" 
+                                ng-class="{
+                                    'current-order': $ctrl.orderProp === 'stock',
+                                    'current-order-reverse': $ctrl.orderProp === '-stock'}"
+                                ng-click="$ctrl.changeOrderProp('stock')"> In stock
                             </th>   
                         </tr>
                     </thead>

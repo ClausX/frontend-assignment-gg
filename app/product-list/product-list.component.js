@@ -217,6 +217,15 @@ angular.
             const volume = Number(product.volume);
             return (volume <= maxVolume && volume >= minVolume);
         };
+
+        self.changeOrderProp = function(orderBy) {
+            console.log(orderBy, orderBy === self.orderProp);
+            if (orderBy === self.orderProp) {
+                self.orderProp = "-" + orderBy;
+            } else {
+                self.orderProp = orderBy;
+            }
+        }
         
         // Watchers _____________________
 

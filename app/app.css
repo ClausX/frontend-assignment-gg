@@ -39,6 +39,14 @@ body {
   float: right;
 }
 
+.current-order::after {
+  content: "▲";
+}
+
+.current-order-reverse::after {
+  content: "▼"
+}
+
 /* no-select css borrowed from stackoverflow */
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
