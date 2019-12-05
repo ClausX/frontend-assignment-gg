@@ -196,35 +196,28 @@ angular.
 
         // Filters & table controllers __
 
-        self.filterPrice = function(product) { // TODO: Refactor
-            let maxPrice = self.maxPrice ? self.maxPrice : Number.MAX_SAFE_INTEGER;
-            let minPrice = self.minPrice ? self.minPrice : 0;
-
-            if (typeof maxPrice != 'number') {
-                maxPrice = parseFloat(maxPrice); // This doesn't work with '123,45', only with '123.45'
-            }
-            if (typeof minPrice != 'number') {
-                minPrice = parseFloat(minPrice); // This doesn't work with '123,45', only with '123.45'
-            }
-
-            const price = Number(product.price);
-            return (price <= maxPrice && price >= minPrice);
+        self.filterPrice = function(product) {
+            return self.filterOnVolume(self.maxPrice, self.minPrice, product.price);
         }
 
         self.filterVolume = function(product) { 
-            let maxVolume = self.maxVolume ? self.maxVolume : Number.MAX_SAFE_INTEGER;
-            let minVolume = self.minVolume ? self.minVolume : 0;
-
-            if (typeof maxVolume != 'number') {
-                maxVolume = parseFloat(maxVolume); // This doesn't work with '123,45', only with '123.45'
-            }
-            if (typeof minVolume != 'number') {
-                minVolume = parseFloat(minVolume); // This doesn't work with '123,45', only with '123.45'
-            }
-
-            const volume = Number(product.volume);
-            return (volume <= maxVolume && volume >= minVolume);
+            return self.filterOnVolume(self.maxVolume, self.minVolume, product.volume);
         };
+
+        self.filterOnVolume = function (inMaxValue, inMinValue, productValue) {
+            const maxValue = self.floatifyValue(inMaxValue ? inMaxValue : Number.MAX_SAFE_INTEGER);
+            const minValue = self.floatifyValue(inMinValue ? inMinValue : 0);
+            const value = Number(productValue);
+            
+            return (value <= maxValue && value >= minValue);
+        }
+
+        self.floatifyValue = function (value) {
+            if (typeof value != 'number') {
+                value = parseFloat(value);
+            }
+            return value;
+        }
 
         self.changeOrderProp = function(orderBy) {
             console.log(orderBy, orderBy === self.orderProp);
