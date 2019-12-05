@@ -1,11 +1,12 @@
 <div class="container-fluid">
     <div class="col-md-2"> 
         <div class="panel panel-default">
+            <div class="panel-heading">Categories</div>
             <div class="panel-body">
                 <p>
-                    Category:
+                    <!-- I would reather have this as a tree structure in some way -->
                     <select ng-model="$ctrl.productCategory">
-                        <option ng-repeat="category in $ctrl.productCategories">{{category}}</option>
+                        <option ng-repeat="category in $ctrl.productCategories" value="{{category.id}}">{{category.name}}</option>
                     </select> 
                 </p>
             </div>
@@ -14,6 +15,7 @@
     <div ng-if="$ctrl.isLoading" class="spinner"></div>
     <div class="col-md-10"> 
         <div class="row panel panel-default">
+            <div class="panel-heading">Search</div>
             <div class="panel-body">
                 <!--TODO: Make this a component?-->
                 <div class="col-md-3"> 
@@ -28,7 +30,7 @@
                     </p>
                     
                     <p>
-                        <input type="checkbox" ng-model="$ctrl.filterInStock" ng-false-value="">Show only products in stock</input>
+                        <input type="checkbox" ng-model="$ctrl.filterInStock" ng-false-value=""> Show only products in stock</input>
                     </p>
                 </div>
 
@@ -123,12 +125,19 @@
                 </table>
             </div >
 
-            <div class="row">
+            <div class="row secondary-text">
+                Show 
+                <select ng-model="$ctrl.productsPerPage"> <!-- TODO: ng-repeat on array-->
+                    <option>5</option>
+                    <option>10</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select> per page
                 <span class="page-index">Page <span>{{$ctrl.pageNumber}}</span> of <span>{{$ctrl.pages.length}}</span></span>
             </div>
 
             <div class="row">
-                <!-- Could easily be a separate component-->
+                <!-- Could be a separate component-->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" ng-class="{disabled: $ctrl.pageNumber === 1}">

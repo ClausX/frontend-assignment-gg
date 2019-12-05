@@ -8,7 +8,13 @@ angular.
         var self = this;
         self.productTree;
         self.allProducts = [];
-        self.productCategories = ["", "s04", "s0405", "s0406"]; // Dynamic?
+        self.productCategories = [
+            {id: "", name: "All Products"},
+            {id: "s04", name: "Slang & Kabelupprullare"}, 
+            {id: "s0405", name: "- Avfettning"}, 
+            {id: "s0406", name: "- Avspärrning"},
+            {id: "s0407", name: "- Butan/Propan"}
+        ]; // Dynamic?
         self.productCategory = '';
         self.displayProducts = [];
         self.pages = [1];
@@ -24,7 +30,8 @@ angular.
         const getAlot = false;
         
         if (getAlot) {
-            window.getAlotOfCategories(response => { // This exists in order to try getAlotOfCategories and does its own thing
+            window.getAlotOfCategories(response => { // This exists in order to try getAlotOfCategories and does its own thing atm
+                self.productTree = response;
                 getProductIds(response).then(data => {
                     for (let i = 0; i < 1234; i++) {
                         window.getRandomProduct(data[i], response => {
@@ -53,7 +60,7 @@ angular.
             return new Promise(resolve => {
                 getProductIds(productsToDisplay).then(data => {
                     let products = [];
-                    var promises = [];
+                    let promises = [];
                     for (let id of data) {
                         promises.push(new Promise(resolve => {
                             window.getProduct(id, response => {
@@ -127,10 +134,11 @@ angular.
         }
 
         function updateDisplayProducts(category) {
+            self.isLoading = true;
             if (category === '') {
                 self.displayProducts = self.allProducts;
+                self.isLoading = false;
             } else {
-                self.isLoading = true;
                 findAndDisplayCategory(self.productTree, category);
             }
         }
